@@ -20,7 +20,29 @@ and open the template in the editor.
             </ul>
         </nav>
         <?php
-        // put your code here
+         require 'Database.php';    
+         $connection = new createConnexion();
+         $connect = $connection->connect();
+  
+  if($connect != NULL){
+      $req = mysqli_prepare("INSERT INTO Produit (Reference, Libelle, Categorie, Marque, Quantite, Prix, Description) VALUES (:reference,:libelle,:categorie,:marque,:quantite,:prix,:description)");
+      $req = mysqli_execute(array(
+          'reference' => $reference,
+          'libelle' => $libelle ,
+          'categorie' => $categorie,
+          'marque' => $marque,
+          'quantite' => $quantite,
+          'prix' => $prix,
+          'description' => $description
+      ));
+     
+
+      $resultat = mysqli_query($connect,$req);
+      if($resultat == false) {echo "Echec de la connexion <br>";}
+      else {echo "produit enregistré <br>";}
+      if(mysqli_close($connect)) {echo "Deconnexion reussi <br>";}
+  }
+
         ?>
     </body>
 </html>
