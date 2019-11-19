@@ -20,7 +20,22 @@ and open the template in the editor.
             </ul>
         </nav>
         <?php
-        // put your code here
+         require 'Database.php';    
+         $connection = new createConnexion();
+         $connect = $connection->connect();
+  
+  if($connect != NULL){
+      $req = mysqli_query("SELECT nom FROM Client");
+      while ($reponse = mysqli_fetch_array ($req))
+      {
+          echo $reponse['nom'] . '<br />';
+      }
+   
+      $resultat = mysqli_query($connect,$req);
+      if($resultat == false) {echo "Echec de la connexion <br>";}
+      else {echo "produit enregistré <br>";}
+      if(mysqli_close($connect)) {echo "Deconnexion reussi <br>";}
+  }
         ?>
     </body>
 </html>
