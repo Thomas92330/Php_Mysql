@@ -128,9 +128,19 @@ function afficher_les_commentaires($id_client) {
       return ($req);
    
 }
+       //Vérifié si l'id correspond a un id stocké dans la BD
+fonction authentification_id_manager($id_manager){
+     $rep=get_id_manager();
+     for(i=0;i<strlen($rep);i++){
+          if($rep[i]==$id_manager){return (TRUE);}
+     }
+     return (false);
+}
         //Verifie l'authentification
         //Prend en argument id et mdp d'un manager
-function authentification_manager($id_manager, $mdp_verif) {
+function authentification__mdp_manager($id_manager, $mdp_verif) {
+    
+    //On vérifié que l'id rentré correspond a un dans la BD
     $req = mysqli_prepare("SELECT mot_de_passe FROM Manager WHERE id = :id");
     $req = mysqli_execute(array(
         'id' => $id_manager;
@@ -144,7 +154,7 @@ function authentification_manager($id_manager, $mdp_verif) {
 }
         //Verifie l'authentification
         //Prend en argument id et mdp d'un client
-function authentification_client($id_client, $mdp_verif) {
+function authentification_mdp_client($id_client, $mdp_verif) {
     $req = mysqli_prepare("SELECT mot_de_passe FROM Client WHERE id = :id");
     $req = mysqli_execute(array(
         'id' => $id_client;
