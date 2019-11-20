@@ -80,7 +80,7 @@ function ajoutez_un_produit() {
         //Supprime un produit de la table Produit 
         //Prend en argument un libelle
         //Verifier que la quantité du produit est a 0
-function supprimer_produit(){
+function supprimer_produit($libelle){
     $req = mysqli_query("SELECT libelle FROM Produit");
       while ($reponse = mysqli_fetch_array ($req))
       {
