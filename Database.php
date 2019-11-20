@@ -120,31 +120,69 @@ function modifier_produit() {
 }
         //Affiche les commentaires d'un client
         //Prend en argument un id de client
-function afficher_les_commentaires() {
-    $req = mysqli_query("SELECT nom FROM Client");
-      while ($reponse = mysqli_fetch_array ($req))
-      {
-          echo $reponse['nom'] . '<br />';
-      }
+function afficher_les_commentaires($id_client) {
+    $req = mysqli_prepare("SELECT commentaire FROM Client WHERE id = :id");
+    $req = mysqli_execute(array(
+        'id' => $id_client;
+    ));
+      return ($req);
    
 }
         //Verifie l'authentification
         //Prend en argument id et mdp d'un manager
-function authentification_manager() {
-    
+function authentification_manager($id_manager, $mdp_verif) {
+    $req = mysqli_prepare("SELECT mot_de_passe FROM Manager WHERE id = :id");
+    $req = mysqli_execute(array(
+        'id' => $id_manager;
+        ));
+    if ($req == $mdp_verif){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
         //Verifie l'authentification
         //Prend en argument id et mdp d'un client
-function authentification_client() {
-    
+function authentification_client($id_client, $mdp_verif) {
+    $req = mysqli_prepare("SELECT mot_de_passe FROM Client WHERE id = :id");
+    $req = mysqli_execute(array(
+        'id' => $id_client;
+        ));
+    if ($req == $mdp_verif){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
         //Verifie la creation d'un compte
         //Prend en argument id et mdp d'un cient
         //Pas moins de 2 character
         //Pas plus de 12
         //Et bien plus encore, faut checker le sujet
-function verification_nouveau() {
-    
+function verification_nouveau($nom,$prenom,$id,$tel,$adresse,$mdp,$mdp_verif) {
+    if((strlen($nom)<=2) || (strlen($prenom)<=2 )) {
+        echo 'Le nom et le prenom doivent faire au moins 2 caractere de long' . '<br />';
+        return false;
+    }
+    if((!pregmatch ("/[0-9]/",$tel)||(substrat($tel,0,1)!=0))){
+        echo 'Le tel doit commencer par 0' . '<br />';
+        return false;
+    }
+    if(!pregmatch("/[0-9]/",substrat($adresse,0,5))){
+        echo 'L\'adresse doit commencer par un code postal de 5 chiffres'  . '<br />';
+        return false;
+    }
+    if($mdp != $mdp_verif){
+        echo 'Le mot de pase ne correspond pas au mot de passe de verification' . '<br />';
+        return false;
+    }
+    if((strlen($mdp)<=8) || (!pregmatch(substrat("/[A-Z]/",$mdp,0,1))) || (!pregmatch(substrat("/[A-Z]/",$mdp,strlen($mdp),1)))  ){
+        echo'Le mdp doit faire au moins 8 cara, commencer par une Maj, finir par une Mini';
+        return false;
+    }
+    return true;
 }
 ?>
 
