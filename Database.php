@@ -25,28 +25,44 @@ class createConnexion  {
 }
         //Renvoi tout les id de la table client sous forme de tableau
 function get_id_client() {
-        
+    $req = mysqli_query(SELECT id FROM Client);
+    return ($req);
 }
         //Renvoi tout les mdp de la table client sous forme de tableau
-function get_mdp_client() {
-    
+function get_mdp_client($id_client) {
+    $req = mysqli_prepare(SELECT mot_de_passe FROM Client WHERE id=:id);
+    $req = mysqli_execute(array(
+          'id' => $id_client
+           ));
+    return ($req);
 }   
         //Renvoi tout les id de la table manager sous forme de tableau
 function get_id_manager() {
-    
+    $req = mysqli_query(SELECT id FROM Manager);
+    return ($req);
 }
-        //Renvoi tout les mdp de la table manager sous forme de tableau
-function get_mdp_manager() {
-    
+        //Renvoi le mdp d'un manager 
+        //Prend en argument un id manager
+function get_mdp_manager($id_manager) {
+    $req = mysqli_prepare(SELECT mot_de_passe FROM Manager WHERE id=:id);
+    $req = mysqli_execute(array(
+          'id' => $id_manager
+           ));
+    return ($req);
 }
         //Renvoi tout les libelle de la table Produit sous forme de tableau
 function get_libelle(){
-    
+    $req = mysqli_query(SELECT libelle FROM Produit);
+    return ($req);
 }
         //Renvoi la quantite du produit 
         //prend en argument libelle
-function get_quantite(){
-    
+function get_quantite($libelle){
+    $req = mysqli_prepare(SELECT quantite FROM Produit WHERE libelle=:libelle);
+    $req = mysqli_execute(array(
+          'libelle' => $libelle
+           ));
+    return ($req);
 }
         //Ajoute un produit a la table Produit
 function ajoutez_un_produit() {
