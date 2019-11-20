@@ -16,6 +16,7 @@ and open the template in the editor.
         <?php
         include ('Database.php');
         
+        //on demande a l'utilisateur si il est client, manager ou nouveau
         if ((isset($_POST['client'])== FALSE) && (isset($_POST['manager'])== FALSE) && (isset($_POST['nouveau'])== FALSE)){
             echo'
                 <form action="Authentification.php" method="post">
@@ -31,6 +32,8 @@ and open the template in the editor.
             
         }
         
+        //l'utilisateur est un client voulant ce connecter a son espace
+        //on lui demande son id et mdp
         if (isset($_POST['client']))
         {
             echo '
@@ -45,6 +48,9 @@ and open the template in the editor.
             '; 
         }
         
+        
+        //on verifie si les id et MDP correspondent
+        //on redirige automatiquement vers la page suivante (utilisation de header ('Location:...'); exit();
         if (isset($_POST['client_id']) && isset($_POST['client_mot_de_passe'])){
             require 'Database.php';    
             $connection = new createConnexion();
@@ -64,6 +70,8 @@ and open the template in the editor.
             }
         }
         
+        //l'utilisateur est un manager voulant ce connecter a son espace
+        //on lui demande son id et mdp
         if (isset($_POST['manager'])){
             echo '
             <form action="Authentification.php" method="post">
@@ -78,7 +86,10 @@ and open the template in the editor.
         }
         
         if (isset($_POST['manager_id']) && isset($_POST['manager_mot_de_passe'])){
-            get_id_client();
+            if (Authentification_manager()){
+               header('Location: .. ');
+               exit();
+            }
         }
         
         if (isset($_POST['nouveau'])){
