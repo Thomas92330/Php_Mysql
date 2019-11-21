@@ -17,6 +17,7 @@ and open the template in the editor.
         <p> Bonjour. </p>
             
         <p> Souhaitez-vous vous <a href="Authentification.php"> connecter </a> ?</p>
+        <p> Ou alors <a href="Creation_de_compte.php"> creer un compte </a> ?</p>
         
         <p>Créé en 1996, le Groupe LDLC est aujourd’hui leader du e-commerce informatique et high-tech en France. Avec ses 5 sites marchands, il conjugue des<br/>
             activités dans le domaine de l’informatique, du high-tech, de la puériculture ou encore de l’éducation. En avril 2019, le Groupe LDLC emploie environ 920<br/> 
