@@ -10,34 +10,38 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <nav class="menu">
-            <ul>
-                <li><a href="Ajoutez_un_produit.php"> Ajouter un produit </a>
-                <li><a href="Modifier_un_produit.php"> Modifier un produit </a></li>
-                <li><a href="Supprimer_un_produit.php"> Supprimer un produit </a></li>
-                <li><a href="Consulter_un_produit.php"> Consulter un produit </a></li>
-                <li><a href="Afficher_la_liste_des_commentaires_d_un_client_donné.php"> Afficher la liste des commentaires d un client donné</a></li>
-            </ul>
-        </nav>
-        <?php
-         require 'Database.php';    
-         $connection = new createConnexion();
-         $connect = $connection->connect();
-  
-  if($connect != NULL){
-      $req = mysqli_query("SELECT nom FROM Produit");
-      while ($reponse = mysqli_fetch_array ($req))
-      {
-          echo $reponse['libelle'] . '<br />';
-      }
-      
-     
+        <?php include '../Commun/nav_manager.php'; ?>
+        <?php       
+        if(isset($_POST['checker'])){
+        include 'Database.php';    
+        $connection = new createConnexion();
+        $connect = $connection->connect();
 
-      $resultat = mysqli_query($connect,$req);
-      if($resultat == false) {echo "Echec de la connexion <br>";}
-      else {echo "produit enregistré <br>";}
-      if(mysqli_close($connect)) {echo "Deconnexion reussi <br>";}
-  }
+        if($connect != NULL){
+             modifier_un_produit($_POST['libelle'], $_POST['categorie'], $_POST['$marque'], $_POST['quantite'], $_POST['prix'], $_POST['description']);
+        }
+            
+        }
+         
+        else{
+            echo'
+                 <form action="Modifier_un_produit.php" method="post">
+            <p>
+                <input type="text" name="libelle">
+                <input type="text" name="categorie">
+                <input type="text" name="marque">
+                <input type="number" name="quantite">
+                <input type="number" name="prix">
+                <input type="text" name="description">
+                
+                <input type="hidden" name="checker" value=1>
+                
+                <input type="submit" value="Valider">
+            </p>
+            ';
+             
+        }
+        
         ?>
     </body>
 </html>
