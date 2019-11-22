@@ -10,40 +10,31 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        <nav class="menu">
-            <ul>
-                <li><a href="Ajoutez_un_produit.php"> Ajouter un produit </a>
-                <li><a href="Modifier_un_produit.php"> Modifier un produit </a></li>
-                <li><a href="Supprimer_un_produit.php"> Supprimer un produit </a></li>
-                <li><a href="Consulter_un_produit.php"> Consulter un produit </a></li>
-                <li><a href="Afficher_la_liste_des_commentaires_d_un_client_donné.php"> Afficher la liste des commentaires d un client donné</a></li>
-            </ul>
-        </nav>
+        <?php include '../Commun/nav_manager.php'; ?>
         <?php
-        require 'Database.php';    
-         $connection = new createConnexion();
-         $connect = $connection->connect();
-  
-  if($connect != NULL){
-      $req = mysqli_query("SELECT libelle FROM Produit");
-      while ($reponse = mysqli_fetch_array ($req))
-      {
-          $req2 = mysqli_prepare("SELECT quantite FROM Produit WHERE libelle = :reponse_libelle");
-          $req2 = mysqli_execute(array(
-              'reponse_libelle' => $reponse['libelle']
-          ));
-          while ($reponse_quantite = mysqli_fetch_array($req2)){
-                if($reponse_quantite['quantite'] == 0 ) {
-                    echo reponse['libelle'] . '<br/>';
-                }
-          }
-      }
-      
-      $resultat = mysqli_query($connect,$req);
-      if($resultat == false) {echo "Echec de la connexion <br>";}
-      else {echo "produit enregistré <br>";}
-      if(mysqli_close($connect)) {echo "Deconnexion reussi <br>";}
-  }
+        if(isset($_POST['checker'])){
+        include 'Database.php';    
+        $connection = new createConnexion();
+        $connect = $connection->connect();
+
+        if($connect != NULL){
+            supprimer_produit($libelle);
+        }
+            
+        }
+         
+        else{
+            echo'
+                 <form action="Supprimer_un_produit.php" method="post">
+            <p>
+                <input type="text" name="libelle">
+                <input type="hidden" name="checker" value=1>
+                
+                <input type="submit" value="Valider">
+            </p>
+            ';
+             
+        }
         ?>
         
     </body>
