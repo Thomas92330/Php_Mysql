@@ -23,13 +23,6 @@ and open the template in the editor.
             activités dans le domaine de l’informatique, du high-tech, de la puériculture ou encore de l’éducation. En avril 2019, le Groupe LDLC emploie environ 920<br/> 
             collaborateurs pour un chiffre d’affaires de 507,5 millions d’euros.</p>
         
-        <?php
-        // put your code here
-        ?>
-        <footer>
-            <h1>Nous contacter :</h1>
-            <p>Numéro de téléphone : 04 27 46 60 00</p><br>
-            <p>Adresse : 12-14 Rue de l'Église, 75015 Paris</p>
-        </footer>
+        <?php include 'Commun/footer.php'; ?>
     </body>
 </html>
