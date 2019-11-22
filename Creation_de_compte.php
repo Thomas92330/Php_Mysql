@@ -10,11 +10,11 @@ and open the template in the editor.
         <title></title>
     </head>
     <body>
-        
+        <?php include 'Commun/footer.php'; ?>
         <?php
         if( (!isset($_POST['id'])) && (!isset($_POST['telephone'])) && (!isset($_POST['adress']))){
             echo '
-                    <form action="Creation_de_compte.php" method="post">
+                    <form action="Authentification.php" method="post">
             <p>
                 <input type="text" name="nom">
                 <input type="text" name="prenom">
