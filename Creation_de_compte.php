@@ -6,11 +6,18 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <link rel="stylesheet" href="Authentification.css">
         <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
-        <?php include 'Commun/footer.php'; ?>
+        <header>
+            <figure>
+                <img id="logo_ldlc" src="ldlc-logo.jpg" alt="logo" width="180" height="180"/>
+            </figure>
+            <h1>LDLC</h1>
+       </header>
+        <div>
         <?php
         if( (!isset($_POST['id'])) && (!isset($_POST['telephone'])) && (!isset($_POST['adress']))){
             echo '
@@ -36,5 +43,7 @@ and open the template in the editor.
             }
             }
         ?>
+        </div>
+        <?php include 'Commun/footer.php'; ?>
     </body>
 </html>
