@@ -6,10 +6,18 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <link rel="stylesheet" href="Authentification.css">
         <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
+        <header>
+            <figure>
+                <img id="logo_ldlc" src="ldlc-logo.jpg" alt="logo" width="180" height="180"/>
+            </figure>
+            <h1>LDLC</h1>
+       </header>
+        <div>
         <?php include '../Commun/nav_client.php'; ?>
         <?php
         if(isset($_POST['checker'])){
@@ -37,5 +45,7 @@ and open the template in the editor.
              
         }
         ?>
+        </div>
+        <?php include 'Commun/footer.php'; ?>
     </body>
 </html>
