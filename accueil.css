@@ -1,7 +1,7 @@
 article
     {
+        color: #6495ED;
         padding:10px;
-        color: black;
         font-family: "Times New Roman";
         font-size: 18px;
         text-align: justify;
@@ -27,6 +27,7 @@ header
 }
 footer
 {
+    color: #6495ED;
     text-align: center;
     border-width:2px;
     border-style:double;
@@ -37,10 +38,12 @@ footer
 }
 #connexion
 {
+    color: #6495ED;
     margin-left: 120px;
 }
 #connexion2
 {
+    color: #6495ED;
     margin-left:180px;
 }
 #connexion_logo
@@ -61,4 +64,9 @@ footer
 {
     
 }
+body
+{
+    background-image: url(fond.jpg);
+}
+
 
