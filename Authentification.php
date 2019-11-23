@@ -6,10 +6,18 @@ and open the template in the editor.
 -->
 <html>
     <head>
+        <link rel="stylesheet" href="Authentification.css">
         <meta charset="UTF-8">
         <title>Authentification</title>
     </head>
     <body>
+       <header>
+            <figure>
+                <img id="logo_ldlc" src="ldlc-logo.jpg" alt="logo" width="180" height="180"/>
+            </figure>
+            <h1>LDLC</h1>
+       </header>
+        <div>
         <?php
         
         //Intégration de la page Database.php contenant les fonctions lié à la bdd
@@ -23,7 +31,7 @@ and open the template in the editor.
             <p>
                 Etes vous : 
                 <input type="radio" id="client" name="choix" value="client"  /> <label for="client">Client</label>
-                <input type="radio" id="manager" name="choix"value ="manager"/> <label for="manager">Manager</label>
+                <input type="radio" id="manager" name="choix" value ="manager"/> <label for="manager">Manager</label>
                 
                 <input type="submit" value="Valider">
             </p>
@@ -70,7 +78,7 @@ and open the template in the editor.
             }
         }
         
-        ?>
+        ?></div>
         <?php include 'Commun/footer.php'; ?>
     </body>
 </html>
