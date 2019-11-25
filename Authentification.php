@@ -81,6 +81,7 @@ and open the template in the editor.
             if(authentification($_POST['manager_id'], $_POST['manager_mot_de_passe'])){
                 setcookie('id', $_POST['manager_id'],time()+60*60*24*7);
                 include'Commun/nav_manager.php';    
+            }
             else{
                 printf('Le mot de passe est erronnée');
             }
