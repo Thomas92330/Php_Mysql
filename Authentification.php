@@ -55,7 +55,12 @@ and open the template in the editor.
         
         if (isset($_POST['client_id']) && isset($_POST['client_mot_de_passe'])){
             if(authentification($_POST['client_id'], $_POST['client_mot_de_passe'])){
+                
                 include 'Commun/nav_client.php';
+                setcookie('id', $_POST['client_id']);
+            }
+            else{
+                printf('Le mot de passe est erronnée');
             }
         }
         
@@ -74,7 +79,10 @@ and open the template in the editor.
         
         if (isset($_POST['manager_id']) && isset($_POST['manager_mot_de_passe'])){
             if(authentification($_POST['manager_id'], $_POST['manager_mot_de_passe'])){
-                include'Commun/nav_manager.php';
+                setcookie('id', $_POST['manager_id'],time()+60*60*24*7);
+                include'Commun/nav_manager.php';    
+            else{
+                printf('Le mot de passe est erronnée');
             }
         }
         
