@@ -6,14 +6,14 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <link rel="stylesheet" href="Authentification.css">
+        <link rel="stylesheet" href="Css/Authentification.css">
         <meta charset="UTF-8">
         <title>Authentification</title>
     </head>
     <body>
        <header>
             <figure>
-                <img id="logo_ldlc" src="ldlc-logo.jpg" alt="logo" width="180" height="180"/>
+                <img id="logo_ldlc" src="Css/ldlc-logo.jpg" alt="logo" width="180" height="180"/>
             </figure>
             <h1>LDLC</h1>
        </header>
@@ -45,7 +45,7 @@ and open the template in the editor.
                 <form action="Authentification.php" method="post">
             <p>
                 Client :
-                <input type="password" name="client_id">
+                <input type="text" name="client_id">
                 <input type="password" name="client_mot_de_passe">
                 
                 <input type="submit" value="Valider">
@@ -55,9 +55,9 @@ and open the template in the editor.
         
         if (isset($_POST['client_id']) && isset($_POST['client_mot_de_passe'])){
             if(authentification($_POST['client_id'], $_POST['client_mot_de_passe'])){
-                
-                include 'Commun/nav_client.php';
                 setcookie('id', $_POST['client_id']);
+                include 'Commun/authen_nav.php';
+
             }
             else{
                 printf('Le mot de passe est erronnée');
@@ -65,6 +65,7 @@ and open the template in the editor.
         }
         
         if ((isset($_POST['choix'])) && $_POST['choix']=='manager'){
+            if(!isset($_COOKIE['id'])){
             echo '
             <form action="Authentification.php" method="post">
             <p>
@@ -75,19 +76,24 @@ and open the template in the editor.
                 <input type="submit" value="Valider">
             </p>
             ';
+            }
+            else{
+                 include'Commun/authen_nav.php';    
+            }
         }
         
         if (isset($_POST['manager_id']) && isset($_POST['manager_mot_de_passe'])){
             if(authentification($_POST['manager_id'], $_POST['manager_mot_de_passe'])){
                 setcookie('id', $_POST['manager_id'],time()+60*60*24*7);
-                include'Commun/nav_manager.php';    
+                include'Commun/authen_nav.php';    
             }
             else{
                 printf('Le mot de passe est erronnée');
             }
         }
         
-        ?></div>
+        ?>
+        </div>
         <?php include 'Commun/footer.php'; ?>
     </body>
 </html>
