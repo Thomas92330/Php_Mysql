@@ -14,46 +14,36 @@
         </header>
         
             <?php
-            restore_include_path();
-            include '../Commun/Database.php';
-            restore_include_path();
-            include '../Commun/nav.php';
+        include_once '/opt/lampp/htdocs/ProjetPhp/Commun/nav.php';
             ?>
+        <div>
             
-            <?php if(!isset($_GET['client'])){
-            echo'<table>';
-                echo'<tr>';
-                    echo'<th>Nom</th>';
-                    echo'<th>Prenom</th>';
-                    echo'<th>Id</th>';
-                    echo'<th>Consulter</th>';
-                echo'</tr>';
-
-                
-                $connection = new createConnexion();
-                $connect = $connection->connect();
-                $result = mysqli_query($connect, "SELECT * FROM Utilisateur WHERE Client = 1");
-                while ($res = mysqli_fetch_assoc($result)) {
-                    echo'<tr>';
-                    echo'<th>' . $res['Nom'] . '</th>';
-                    echo'<th>' . $res['Prenom'] . '</th>';
-                    echo'<th>' . $res['Id'] . '</th>';
-   
-                    echo'<th>'
-                    . '<form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="get">'
-                    . '<input type="radio" id="btn" name="client" value =' . $res["Id"] . '/> <label for="btn">Consulter</label>      
-        <input type="submit" value="Valider">'
-                    . '</form>'.'</th>';
-        
-                    echo'</tr>';
-                }
+            <?php if(!isset($_POST['client']) && !isset($_POST['Id_commentaire']) && !isset($_POST['reponse']) && !isset($_POST['choix'])){
+                echo"<table id='Tableau'>";
+                afficher_tableau_client_commentaire();
+                echo"</table>";
             }
             
-            else {
-                afficher_les_commentaires($_GET['client']);
+            else if(isset($_POST['client']) && !isset($_POST['Id_commentaire']) && !isset($_POST['reponse']) && !isset($_POST['choix'])){
+                echo"<table id='Tableau'>";
+                afficher_les_commentaires($_POST['client']);
+                echo"</table>";
             }
+            
+            else if(!isset($_POST['client']) && isset($_POST['Id_commentaire']) && !isset($_POST['reponse']) && isset($_POST['choix']) && $_POST['choix'] == 0){
+                supprimer_commentaire($_POST['Id_commentaire']);
+            }
+            
+            else if(!isset($_POST['client']) && isset($_POST['Id_commentaire']) && !isset($_POST['reponse']) && isset($_POST['choix']) && $_POST['choix'] == 1){
+                repondre_commentaire();
+            }
+            
+            else if(!isset($_POST['client']) && isset($_POST['Id_commentaire']) && isset($_POST['reponse']) && !isset($_POST['choix'])){
+                envoyer_commentaire();
+            }
+          
                 ?>
-            </table>
+
         </div>
         <?php
         restore_include_path();
