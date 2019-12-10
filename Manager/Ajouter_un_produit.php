@@ -6,38 +6,24 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <link rel="stylesheet" href="../Commun/authentification.css">
+        <link rel="stylesheet" href="../Css/Authentification.css">
         <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
-        <?php include '../Commun/nav_manager.php'; ?>
-        <?php
-        if (isset($_POST['checker'])) {
-            include 'Database.php';
-            $connection = new createConnexion();
-            $connect = $connection->connect();
+        <?php 
+        include_once '/opt/lampp/htdocs/ProjetPhp/Commun/Database.php';
+        include_once '/opt/lampp/htdocs/ProjetPhp/Commun/nav.php';
 
-            if ($connect != NULL) {
-                ajoutez_un_produit($_POST['libelle'], $_POST['categorie'], $_POST['$marque'], $_POST['quantite'], $_POST['prix'], $_POST['description']);
-            }
-        } else {
-            echo'
-                 <form action="Ajouter_un_produit.php" method="post">
-            <p>
-                <input type="text" name="libelle">
-                <input type="text" name="categorie">
-                <input type="text" name="marque">
-                <input type="number" name="quantite">
-                <input type="number" name="prix">
-                <input type="text" name="description">
-                
-                <input type="hidden" name="checker" value=1>
-                
-                <input type="submit" value="Valider">
-            </p>
-            ';
+        if (isset($_POST['checker'])) {
+            ajoutez_un_produit($_POST['libelle'], $_POST['categorie'], $_POST['$marque'], $_POST['quantite'], $_POST['prix'], $_POST['description']);
         }
+        else{
+            ajouter_produit_formulaire();
+        }
+
+           
         ?>
     </body>
+    
 </html>
