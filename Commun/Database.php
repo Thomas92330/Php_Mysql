@@ -72,29 +72,30 @@ class createConnexion {
     if ($connect) {
         list($id, $_) = explode('/', $id); //necessaire car $id contient un '/' sorti de nul part
 
-        $query = "SELECT Commentaires FROM Commentaire WHERE Id = '$id'";
+        $query = "SELECT * FROM Commentaire WHERE Id = '$id'";
 
         $req = mysqli_query($connect, $query);
-
         ?>
-        <table id="Tableau"> 
-        <tr>
         <?php
         while ($resultat = $req->fetch_assoc()) {?>
-             <th> $resultat[Commentaires]  </th>
+  
+    <tr>
+             <th> <?php echo $resultat['Commentaires'] ?>  </th>
              <th>
                 <form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="post">
-                    <input type="radio" id="btn" name="id_commentaire" value =<?php $resultat["Id_commentaire"]?>/> <label for="btn">Supprimer</label>      
-                    <input type="hidden" name="choix" value = "suppression"/>      
+                    <input type="hidden" name="Id_commentaire" value =<?php echo $resultat["Id_commentaire"]?>/>      
+                    <input type="hidden" name="choix" value = 0 />      
                     
-                    <input type="submit" value="Valider">
+                    <input type="submit" value="Supprimer">
                 </form>  </th>
              <th>
                 <form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="post">
-                    <input type="radio" id="btn" name="supprimer_commentaire" value =<?php $resultat["Id_commentaire"]?>/> <label for="btn">Modifier</label>      
-                    <input type="hidden" name="choix" value = "reponse"/>  
-                    <input type="submit" value="Valider">
+                    <input type="hidden" name="Id_commentaire" value =<?php echo $resultat["Id_commentaire"]?>/>      
+                    <input type="hidden" name="choix" value = 1 />  
+                    
+                    <input type="submit" value="Modifier">
                 </form>  </th>
+             </tr>
              <?php
         }
     }
@@ -102,7 +103,6 @@ class createConnexion {
 ?> 
 
 <?php function afficher_tableau_client_commentaire() { ?>
-    <table id="Tableau"> 
     <tr>
             <th>Nom</th>
             <th>Prenom</th>
@@ -127,7 +127,6 @@ class createConnexion {
                     <input type="submit" value="Valider">
                 </form>  </th>
         </tr>
-        </table> 
         <?php
     }
 }
@@ -137,7 +136,7 @@ class createConnexion {
     <form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="post">
         <p>
             <input type="text" name="reponse">
-            <input type="hidden" name="id_commentaire"
+            <input type="hidden" name="Id_commentaire" value =<?php echo $_POST['Id_commentaire']?>
             <input type="submit" value="Valider">
         </p>
     </form>
@@ -145,23 +144,29 @@ class createConnexion {
 }
 ?>
         
-<?php function inserer_reponse(){
+<?php function envoyer_commentaire(){
     $connection = new createConnexion();
     $connect = $connection->connect();
-    
-    $query1 = "SELECT  Commentaires FROM Commentaire WHERE Id_commentaire = '".$_POST['id_commentaire']."' ";
+    list($id) = explode ('/',$_POST['Id_commentaire']);
+    $query1 = "SELECT  Commentaires FROM Commentaire WHERE Id_commentaire = '".$_POST['Id_commentaire']."' ";
     $result1 = mysqli_query($connect,$query1);
-    $query2 = "UPDATE  Commentaire SET Commentaires = ".$result1."Reponse : ".$_POST['reponse']." WHERE Id_commentaire = '".$_POST['id_commentaire']."' ";
+    $fetch = mysqli_fetch_assoc($result1);
+    $query2 = "UPDATE  Commentaire SET Commentaires = '".$fetch['Commentaires']." Reponse : ".$_POST['reponse']."' WHERE Id_commentaire = '".$id."' ";
+    var_dump($query2); 
     $result2 = mysqli_query($connect,$query2 );
     
 }
 ?>
         
-<?php function supprimer_commentaire(){
+<?php function supprimer_commentaire($id){
     $connection = new createConnexion();
     $connect = $connection->connect();
-    $query = "DELETE Commentaires FROM Commentaires WHERE Id_commentaire = '".$_POST['id_commentaire']."' ";
+    list($id) = explode ('/',$id);
+    $query = "DELETE FROM Commentaire WHERE Id_commentaire = '".$id."'";
+    var_dump($query);
     $result = mysqli_query($connect,$query );
+    if($result){echo "OUI!!!!!!!";}
+    else{echo "NON!!!";}
 }
 ?>
     <!--                    Fonction Ajoutez un produit             -->
@@ -294,42 +299,40 @@ class createConnexion {
         <th>
         <tr>
         <form action="Modifier_un_produit.php" method="get">'
-            <input type="radio" id="btn" name="choix" value ="Libelle"/> <label for="btn">Modifier</label>
-            <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle 
+            <input type="hidden" name="choix" value ="Libelle"/>
+            <input type="text" id="btn" name="valeure" /> 
                 <input type="hidden" name="reference" value=<?php echo $_GET['reference'] ?>/>
                 <input type="submit" value="Valider">
                 </tr>
                 <tr>
 
-
-
                 <tr>
                 <form action="Modifier_un_produit.php" method="get">'
-                    <input type="radio" id="btn" name="choix" value ="Description"/> <label for="btn">Modifier</label>
-                    <input type="telephone" id="btn" name="valeure" /> <label for="btn">Nouvelle 
+                    <input type="hidden" name="choix" value ="Description"/> 
+                    <input type="text" id="btn" name="valeure" /> 
                         <input type="hidden" name="reference" value=<?php echo $_GET['reference'] ?>/>
                         <input type="submit" value="Valider">
                         </tr>
 
                         <tr>
                         <form action="Modifier_un_produit.php" method="get">'
-                            <input type="radio" id="btn" name="choix" value ="Prix"/> <label for="btn">Modifier</label>
-                            <input type="number" id="btn" name="valeure" /> <label for="btn">Nouvelle 
+                            <input type="hidden" name="choix" value ="Prix"/> 
+                            <input type="number" id="btn" name="valeure" />
                                 <input type="hidden" name="reference" value=<?php echo $_GET['reference'] ?>/>
                                 <input type="submit" value="Valider">
                                 </tr>
                                 <tr>
                                     </th>
                                     </table>
-
-                                    <?php
+                                <?php
+}
+?>
+ 
+ <?php function modifier_produit_util(){ 
                                     if (isset($_GET['choix'])) {
                                         if ($_GET['choix'] == 'Libelle' && isset($_GET['valeure'])) {
                                             modifier_produit($_GET['valeure'], 'Libelle', $_GET['reference']);
                                         }
-
-
-
                                         if ($_GET['choix'] == 'Prix' && isset($_GET['valeure'])) {
                                             modifier_produit($_GET['valeure'], 'Prix', $_GET['reference']);
                                         }
@@ -338,16 +341,15 @@ class createConnexion {
                                             modifier_produit($_GET['valeure'], 'Description', $_GET['reference']);
                                         }
                                     }
-                                }
+ }
  ?>
 
     <!--                    Fonction Supprimer un produit           -->
     
 <?php function supprimer_produit_formulaire() { ?>
         <p> Etes vous sure ?
-        <form action="Ajouter_un_commentaire.php" method="get">
+        <form action="Supprimer_un_produit.php" method="get">
             <input type="radio" id="btn" name="choix" value = 'Oui'/> <label for="btn">Oui</label>
-
             <input type="radio" id="btn" name="choix" value = 'Non'/> <label for="btn">Non</label>  
             <input type="hidden" id="btn" name="reference" value = <?php $_GET['reference'] ?>/> 
             <input type="submit" value="Valider">
@@ -355,17 +357,17 @@ class createConnexion {
     </p>
 <?php } 
 ?>
-
-  
-<?php// $connection = new createConnexion();
-//    $connect = $connection->connect();
-//    if ($connect) {
-//            $req = mysqli_prepare($connect, "DELETE FROM Commentaires Where Id_commentaire = ?");
-//            $req->bind_param('s', $reference);
-//            $req->execute();
-//        }
-//    }
-//?>
+    
+<?php function supprimer_produit($reference){
+$connection = new createConnexion();
+    $connect = $connection->connect();
+    if ($connect) {
+            $req = mysqli_prepare($connect, "DELETE FROM Commentaires WHERE Id_commentaire = ?");
+            $req->bind_param('s', $reference);
+            $req->execute();
+        }
+    }
+?>
 
     
     <!-- ____________________ Fonction Utilisateur ________________ -->
@@ -486,7 +488,7 @@ class createConnexion {
 <?php function formulaire_commentaire(){ ?>
     <form action="Ajouter_un_commentaire.php" method="get">
             <p>
-                <input type="textarea" name="commentaire" col="5" row="5">
+                <input type="text" name="commentaire">
                 <input type="hidden" name="produit" value=$_GET['produit']>
                 
                 <input type="submit" value="Valider">
@@ -560,55 +562,55 @@ class createConnexion {
         <tr>
         <th>
         <form action="Modifier_ses_informations.php" method="get">'
-            <input type="radio" id="btn" name="choix" value ="Nom"/> <label for="btn">Modifier</label>
-            <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+            <input type="hidden"  name="choix" value ="Nom"/> 
+            <input type="text" name="valeure" /> 
             <input type="submit" value="Valider">
             </th>
             <th>
             <form action="Modifier_ses_informations.php" method="get">'
-                <input type="radio" id="btn" name="choix" value ="Prenom"/> <label for="btn">Modifier</label>
-                <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                <input type="hidden" name="choix" value ="Prenom"/> 
+                <input type="text" id="btn" name="valeure" /> 
                 <input type="submit" value="Valider">
                 </th>
                 <th>
                 <form action="Modifier_ses_informations.php" method="get">'
-                    <input type="radio" id="btn" name="choix" value ="Age"/> <label for="btn">Modifier</label>
-                    <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                    <input type="hidden" name="choix" value ="Age"/> 
+                    <input type="text" id="btn" name="valeure" /> 
                     <input type="submit" value="Valider">
                     </th>
 
                     <th>
                     <form action="Modifier_ses_informations.php" method="get">'
-                        <input type="radio" id="btn" name="choix" value ="Telephone"/> <label for="btn">Modifier</label>
-                        <input type="number" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                        <input type="hidden" name="choix" value ="Telephone"/> 
+                        <input type="number" id="btn" name="valeure" /> 
                         <input type="submit" value="Valider">
                         </th>
 
                         <th>
                         <form action="Modifier_ses_informations.php" method="get">'
-                            <input type="radio" id="btn" name="choix" value ="Adresse"/> <label for="btn">Modifier</label>
-                            <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                            <input type="hidden" name="choix" value ="Adresse"/> 
+                            <input type="text" name="valeure" /> 
                             <input type="submit" value="Valider">
                             </th>
 
                             <th>
                             <form action="Modifier_ses_informations.php" method="get">'
-                                <input type="radio" id="btn" name="choix" value ="Sexe"/> <label for="btn">Modifier</label>
-                                <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                                <input type="hidden" name="choix" value ="Sexe"/>
+                                <input type="text" name="valeure" /> 
                                 <input type="submit" value="Valider">
                                 </th>
 
                                 <th>
                                 <form action="Modifier_ses_informations.php" method="get">'
-                                    <input type="radio" id="btn" name="choix" value ="Date_de_naissance"/> <label for="btn">Modifier</label>
-                                    <input type="date" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                                    <input type="hidden" id="btn" name="choix" value ="Date_de_naissance"/>
+                                    <input type="date" name="valeure" /> 
                                     <input type="submit" value="Valider">
                                     </th>
 
                                     <th>
                                     <form action="Modifier_ses_informations.php" method="get">'
-                                        <input type="radio" id="btn" name="choix" value ="Familiale"/> <label for="btn">Modifier</label>
-                                        <input type="text" id="btn" name="valeure" /> <label for="btn">Nouvelle valeure</label>
+                                        <input type="hidden" name="choix" value ="Familiale"/> 
+                                        <input type="text" name="valeure" />
                                         <input type="submit" value="Valider">
                                         </th>
                                         </tr>
@@ -821,9 +823,8 @@ class createConnexion {
 <?php function verif_manager($id){
     $connection = new createConnexion();
     $connect = $connection->connect();
-    $req = mysqli_prepare($connect, "SELECT Client FROM Utilisateur WHERE Id = ?");
-    $req->bind_param('s', $id);
-    $req->execute();
+    $query = "SELECT Client FROM Utilisateur WHERE Id = '".$id."'";
+    $req = mysqli_query($connect, $query);
     
     return mysqli_fetch_all($req);
 }
