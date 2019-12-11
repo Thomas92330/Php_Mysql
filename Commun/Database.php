@@ -245,7 +245,7 @@ class createConnexion {
                     <th> <?php echo $res['Description'] ?>  </th>
                     <th>
                         <form action="Modifier_un_produit.php" method="get">
-                            <input type="radio" id="btn" name="reference" value =<?php echo $res["Reference"] ?> /> <label for="btn">Modifier</label>      
+                            <input type="hidden" id="btn" name="reference" value =<?php echo $res["Reference"] ?> /> <label for="btn">Modifier</label>      
                             <input type="submit" value="Valider">
                         </form>
                     </th>
@@ -253,7 +253,7 @@ class createConnexion {
             <?php if ($res['Quantite'] == 0) { ?>
                         <th>
                             <form action="Supprimer_un_produit.php" method="get">
-                                <input type="radio" id="btn" name="reference" value = <?php echo $res["Reference"] ?>  /> <label for="btn">Modifier</label>      
+                                <input type="hidden" id="btn" name="reference" value = <?php echo $res["Reference"] ?>  /> <label for="btn">Modifier</label>      
                                 <input type="submit" value="Valider">
                             </form>
                         </th>
@@ -392,15 +392,15 @@ $connection = new createConnexion();
     }
 
     if (strlen($mdp) <= 8) {
-        echo'Le mot de passe doit faire au moins 8 chara <br/>';
+        echo'Le mot de passe doit faire au moins 8 charactères ! <br/>';
         return false;
     }
     if (!preg_match("/[A-Z]/", substr($mdp, 0, 1))) {
-        echo'Le mot de passe doit commencer par une Maj <br/>';
+        echo'Le mot de passe doit commencer par une majuscule ! <br/>';
         return false;
     }
     if (!preg_match("/[a-z]/", substr($mdp, strlen($mdp) - 1, 1))) {
-        echo'Le mot de passe doit finir par une Min <br/>';
+        echo'Le mot de passe doit finir par une minuscule ! <br/>';
         return false;
     }
 
@@ -437,7 +437,7 @@ $connection = new createConnexion();
         <th>Marque</th>
         <th>Quantité disponible</th>
         <th>Prix</th>
-        <th>Quantité souhaité</th>
+        <th>Quantité souhaitée</th>
     </tr>
 
     <tr>
@@ -449,7 +449,7 @@ $connection = new createConnexion();
         <th><?php echo $prix ?> </th> 
         <th> 
            <form action="Achete.php" method="get">
-           <input type="number" id="btn" name="quantite" />  
+           <input type="number" id="btn" name="quantite" required/>  
            <input type="hidden" name="produit" value=<?php echo $reference ?>
            <input type="submit" value="Valider">
         </th>
@@ -478,7 +478,7 @@ $connection = new createConnexion();
             $result->execute();
         }
     } else {
-        echo 'Quantite demande trop grande';
+        echo 'La quantité demandée est trop grande !';
     }
 }
 ?>
@@ -488,7 +488,8 @@ $connection = new createConnexion();
 <?php function formulaire_commentaire(){ ?>
     <form action="Ajouter_un_commentaire.php" method="get">
             <p>
-                <input type="text" name="commentaire">
+                <label for="commentaire">Commentaire</label>
+                <input type="text" name="commentaire" required>
                 <input type="hidden" name="produit" value=$_GET['produit']>
                 
                 <input type="submit" value="Valider">
@@ -684,13 +685,13 @@ $connection = new createConnexion();
                     <th>
                    
                      <form action="Achete.php" method="get">
-                     <input type="radio" id="btn_achat" name="produit" value =<?php echo $res["Reference"] ?> /> <label for="btn_achat">Acheter</label>      
+                     <input type="hidden" id="btn_achat" name="produit" value =<?php echo $res["Reference"] ?> /> <label for="btn_achat">Acheter</label>      
                      <input type="submit" value="Valider">
                      </form>
                      </th>
                     <th>
                      <form action="Ajouter_un_commentaire.php" method="get">
-                     <input type="radio" id="btn_commenter" name="produit" value =<?php echo $res["Reference"] ?>/> <label for="btn_commenter">Commenter</label>      
+                     <input type="hidden" id="btn_commenter" name="produit" value =<?php echo $res["Reference"] ?>/> <label for="btn_commenter">Commenter</label>      
                         <input type="submit" value="Valider">
                      </form>
                      </th>
@@ -721,13 +722,13 @@ $connection = new createConnexion();
                             <th> <?php echo $res['Description'] ?> </th>
                             <th>
                                 <form action="Achete.php" method="get">
-                                    <input type="radio" id="btn_achat" name="produit" value =<?php echo $res["Reference"] ?> /> <label for="btn_achat">Acheter</label>      
+                                    <input type="hidden" id="btn_achat" name="produit" value =<?php echo $res["Reference"] ?> /> <label for="btn_achat">Acheter</label>      
                                     <input type="submit" value="Valider">
                                 </form>
                             </th>
                             <th>
                                 <form action="Ajouter_un_commentaire.php" method="get">
-                                    <input type="radio" id="btn_commenter" name="produit" value =<?php echo $res["Reference"] ?> /> <label for="btn_commenter">Commenter</label>      
+                                    <input type="hidden" id="btn_commenter" name="produit" value =<?php echo $res["Reference"] ?> /> <label for="btn_commenter">Commenter</label>      
                                     <input type="submit" value="Valider">
                                 </form>
                             </th>
@@ -745,7 +746,7 @@ $connection = new createConnexion();
 
 <?php function verif_nom($nom) {
     if (strlen($nom) <= 2) {
-        echo 'Le nom doivent faire au moins 2 caractere de long' . '<br />';
+        echo 'Le nom doit faire au moins 2 caractères de long' . '<br />';
         return false;
     }
     return true;
@@ -754,7 +755,7 @@ $connection = new createConnexion();
 
 <?php function verif_prenom($prenom) {
     if (strlen($prenom) <= 2) {
-        echo 'Prenom doit faire au moins 2 caractere de long' . '<br />';
+        echo 'Le prénom doit faire au moins 2 caractères de long' . '<br />';
         return false;
     }
     return true;
@@ -763,7 +764,7 @@ $connection = new createConnexion();
 
 <?php function verif_tel($tel) {
     if ((!preg_match("/[0-9]/", $tel) || (substr($tel, 0, 1) != 0))) {
-        echo 'Le tel doit commencer par 0' . '<br />';
+        echo 'Le numéro de téléphone doit commencer par 0' . '<br />';
         return false;
     }
     return true;
