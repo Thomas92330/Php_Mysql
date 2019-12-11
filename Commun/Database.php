@@ -408,11 +408,11 @@ $connection = new createConnexion();
 }
 ?> 
 
-<?php function ajoutez_utilisateur($nom, $prenom, $age, $id, $tel, $adresse, $mdp, $client) {
+<?php function ajoutez_utilisateur($nom, $prenom, $age, $id, $tel, $adresse, $mdp, $client, $sexe, $date, $familiale) {
     $connection = new createConnexion();
     $connect = $connection->connect();
-    $req = mysqli_prepare($connect, "INSERT INTO Utilisateur (Nom,Prenom,Age,Id,Mot_de_passe,Adresse,Telephone,Client)VALUES (?,?,?,?,?,?,?,?)");
-    $req->bind_param('ssssssss', $nom, $prenom, $age, $id, $mdp, $adresse, $tel, $client
+    $req = mysqli_prepare($connect, "INSERT INTO Utilisateur (Nom,Prenom,Age,Id,Mot_de_passe,Adresse,Telephone,Client,Sexe,Familiale,Date_de_naissance)VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+    $req->bind_param('sssssssssss', $nom, $prenom, $age, $id, $mdp, $adresse, $tel, $client, $sexe, $date, $familiale
     );
     $req->execute();
 }
