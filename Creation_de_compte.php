@@ -26,7 +26,7 @@ and open the template in the editor.
                 <input type="text" name="nom">
                 <input type="text" name="prenom">
                 <input type="number" name="age">
-                <input type="number" name="telephone" value="8 chiffres commence par 0">
+                <input type="number" name="telephone" value="8 chiffres commencençant par 0">
                 <input type="text" name="adress" value="Code postal, Rue ,Ville">
                 <input type="password" name="id">
                 <input type="password" name="mot_de_passe">
