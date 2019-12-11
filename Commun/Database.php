@@ -408,15 +408,17 @@ $connection = new createConnexion();
 }
 ?> 
 
+
 <?php function ajoutez_utilisateur($nom, $prenom, $age, $id, $tel, $adresse, $mdp, $client, $sexe, $date, $familiale) {
     $connection = new createConnexion();
     $connect = $connection->connect();
-    $req = mysqli_prepare($connect, "INSERT INTO Utilisateur (Nom,Prenom,Age,Id,Mot_de_passe,Adresse,Telephone,Client,Sexe,Familiale,Date_de_naissance)VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-    $req->bind_param('sssssssssss', $nom, $prenom, $age, $id, $mdp, $adresse, $tel, $client, $sexe, $date, $familiale
-    );
-    $req->execute();
+    $query = "INSERT INTO `Utilisateur` (`Nom`,`Prenom`,`Age`,`Id`,`Mot_de_passe`,`Adresse`,`Telephone`,`Client`,`Sexe`,`Familiale`,`Date_de_naissance`) VALUES ('$nom', '$prenom', '$age', '$id', '$mdp', '$adresse', '$tel', '$client', '$sexe', '$familiale')";
+    var_dump($query);
+    $req = mysqli_query($connect,$query);
+    if($req){header("Location:Accueil.php");}
 }
 ?>
+   
     
     <!--                    Fonction Achete                         -->
     
@@ -546,7 +548,7 @@ $connection = new createConnexion();
 ?>
     
     <!--                    Fonction Modifier profil                -->
-    
+   
 <?php function modifier_info_formulaire(){?>
     <table id="Tableau">
         <tr>
@@ -562,59 +564,76 @@ $connection = new createConnexion();
 
         <tr>
         <th>
-        <form action="Modifier_ses_informations.php" method="get">'
-            <input type="hidden"  name="choix" value ="Nom"/> 
-            <input type="text" name="valeure" /> 
+            
+        <form action="Modifier_ses_informations.php" method="get">
+            <input type="hidden"  name="choix" value ="Nom"> 
+            <input type="text" name="valeure" > 
             <input type="submit" value="Valider">
+            </form>
             </th>
             <th>
-            <form action="Modifier_ses_informations.php" method="get">'
-                <input type="hidden" name="choix" value ="Prenom"/> 
-                <input type="text" id="btn" name="valeure" /> 
+
+            <form action="Modifier_ses_informations.php" method="get">
+                <input type="hidden" name="choix" value ="Prenom" > 
+                <input type="text" name="valeure" > 
                 <input type="submit" value="Valider">
+                </form>
                 </th>
                 <th>
-                <form action="Modifier_ses_informations.php" method="get">'
-                    <input type="hidden" name="choix" value ="Age"/> 
-                    <input type="text" id="btn" name="valeure" /> 
+                    
+                <form action="Modifier_ses_informations.php" method="get">
+                    <input type="hidden" name="choix" value ="Age"> 
+                    <input type="number" id="btn" name="valeure" > 
                     <input type="submit" value="Valider">
+                    </form>
                     </th>
+                    </form>
 
                     <th>
-                    <form action="Modifier_ses_informations.php" method="get">'
-                        <input type="hidden" name="choix" value ="Telephone"/> 
-                        <input type="number" id="btn" name="valeure" /> 
+                    <form action="Modifier_ses_informations.php" method="get">
+                        <input type="hidden" name="choix" value ="Telephone"> 
+                        <input type="number" name="valeure" > 
                         <input type="submit" value="Valider">
+                        </form>
                         </th>
+                        </form>
 
                         <th>
-                        <form action="Modifier_ses_informations.php" method="get">'
-                            <input type="hidden" name="choix" value ="Adresse"/> 
-                            <input type="text" name="valeure" /> 
+                        <form action="Modifier_ses_informations.php" method="get">
+                            <input type="hidden" name="choix" value ="Adresse"> 
+                            <input type="text" name="valeure" > 
                             <input type="submit" value="Valider">
+                            </form>
                             </th>
+                            </form>
 
                             <th>
-                            <form action="Modifier_ses_informations.php" method="get">'
-                                <input type="hidden" name="choix" value ="Sexe"/>
-                                <input type="text" name="valeure" /> 
+                            <form action="Modifier_ses_informations.php" method="get">
+                                <input type="hidden" name="choix" value ="Sexe">
+                                <input type="text" name="valeure" > 
                                 <input type="submit" value="Valider">
+                                </form>
                                 </th>
+                                </form>
 
                                 <th>
-                                <form action="Modifier_ses_informations.php" method="get">'
-                                    <input type="hidden" id="btn" name="choix" value ="Date_de_naissance"/>
-                                    <input type="date" name="valeure" /> 
+                                <form action="Modifier_ses_informations.php" method="get">
+                                    <input type="hidden" name="choix" value ="Date_de_naissance">
+                                    <input type="date" name="valeure" > 
                                     <input type="submit" value="Valider">
+                                    </form>
                                     </th>
+                                    </form>
 
                                     <th>
-                                    <form action="Modifier_ses_informations.php" method="get">'
-                                        <input type="hidden" name="choix" value ="Familiale"/> 
-                                        <input type="text" name="valeure" />
+                                    <form action="Modifier_ses_informations.php" method="get">
+                                        <input type="hidden" name="choix" value ="Familiale"> 
+                                        <input type="text" name="valeure" >
                                         <input type="submit" value="Valider">
+                                        </form>
                                         </th>
                                         </tr>
+                                        </form>
                                         
                                         </table>
 <?php
@@ -656,13 +675,12 @@ $connection = new createConnexion();
     $connection = new createConnexion();
     $connect = $connection->connect();
     if ($connect) {
-        $req = mysqli_prepare($connect, "UPDATE Utilisateur SET ? = ? WHERE Id = ?");
-        $req->bind_param('ss', $set, $valeure, $_COOKIE['Id']
-        );
-        $req->execute();
+        $query = " UPDATE Utilisateur SET ".$set." = '".$valeure." WHERE Id = '".$_COOKIE['id']."' ";
+        $req = mysqli_query($connect, $query);
     }
 }
 ?> 
+
     
     <!--                    Fonction Passer commande                -->
     
