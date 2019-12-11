@@ -21,10 +21,14 @@
             <p>
             <form action="Passer_une_commande.php">
 
-                <input type="text" name="categorie">
-                <input type="text" name="marque">
-                <input type="number" name="mini">
-                <input type="number" name="maxi">
+                <label for="categorie">Catégorie : </label>
+                <input type="text" name="categorie" required>
+                <label for="marque">Marque : </label>
+                <input type="text" name="marque" required>
+                <label for="mini">Prix minimum : </label>
+                <input type="number" name="mini" required>
+                <label for="maxi">Prix maximum : </label>
+                <input type="number" name="maxi"required>
 
                 <input type="submit" value="Valider">
                             </form>
