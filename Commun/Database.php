@@ -123,7 +123,7 @@ class createConnexion {
 
             <th>
                 <form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="post">
-                    <input type="radio" id="btn" name="client" value =<?php echo $res["Id"] ?>/> <label for="btn">Consulter</label>      
+                    <input type="hidden" id="btn" name="client" value =<?php echo $res["Id"] ?>/> <label for="btn">Consulter</label>      
                     <input type="submit" value="Valider">
                 </form>  </th>
         </tr>
@@ -182,16 +182,19 @@ class createConnexion {
 <?php function ajouter_produit_formulaire() {
     ?>
     <form action="Ajouter_un_produit.php" method="post">
-        <p>
+        <p> 
+            <label for="libelle">Libellé</label>
             <input type="text" name="libelle">
-
+            
+            <label for="categorie">Categorie</label>
             <select name="categorie" size="1">
                 <option selected value="Pc">Pc</option>
                 <option value="Imprimante">Imprimante</option>
                 <option value="Scanner">Scanner</option>
 
             </select>
-
+                    
+            <label for="marque">Marque</label>
             <select name="marque" size="1">
                 <option selected value="Hp">Hp</option>
                 <option value="Canon">Canon</option>
@@ -199,11 +202,14 @@ class createConnexion {
                 <option value="Samsung">Samsung</option>
                 
             </select>
-
+            
+            <label for="quantite">Quantité</label>
             <input type="number" name="quantite">
 
+            <label for="prix">Prix</label>
             <input type="number" name="prix">
 
+            <label for="description">Description</label>
             <input type="text" name="description">
 
             <input type="hidden" name="checker" value=1>
@@ -451,6 +457,7 @@ $connection = new createConnexion();
         <th><?php echo $prix ?> </th> 
         <th> 
            <form action="Achete.php" method="get">
+           <label for="quantite">Quantite</label>
            <input type="number" name="quantite" required >  
            <input type="hidden" name="produit" value=<?php echo $reference ?> >
            <input type="submit" value="Valider">
