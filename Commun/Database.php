@@ -165,8 +165,6 @@ class createConnexion {
     $query = "DELETE FROM Commentaire WHERE Id_commentaire = '".$id."'";
     var_dump($query);
     $result = mysqli_query($connect,$query );
-    if($result){echo "OUI!!!!!!!";}
-    else{echo "NON!!!";}
 }
 ?>
     <!--                    Fonction Ajoutez un produit             -->
@@ -198,7 +196,8 @@ class createConnexion {
                 <option selected value="Hp">Hp</option>
                 <option value="Canon">Canon</option>
                 <option value="Epson">Epson</option>
-                <option value="Samsung">Samsung/option>
+                <option value="Samsung">Samsung</option>
+                
             </select>
 
             <input type="number" name="quantite">
@@ -219,7 +218,6 @@ class createConnexion {
         
 <?php function consulter_produit() {
     ?>
-        <table id="Tableau">
             <tr>
                 <th>'Référence.'</th>
                 <th>'Libellé.'</th>
@@ -262,7 +260,6 @@ class createConnexion {
                             Quantite trop grande
                         </th>
                     </tr>
-                </table>
                 <?php
             }
         }
@@ -329,18 +326,18 @@ class createConnexion {
 ?>
  
  <?php function modifier_produit_util(){ 
-                                    if (isset($_GET['choix'])) {
-                                        if ($_GET['choix'] == 'Libelle' && isset($_GET['valeure'])) {
-                                            modifier_produit($_GET['valeure'], 'Libelle', $_GET['reference']);
-                                        }
-                                        if ($_GET['choix'] == 'Prix' && isset($_GET['valeure'])) {
-                                            modifier_produit($_GET['valeure'], 'Prix', $_GET['reference']);
-                                        }
+    if (isset($_GET['choix'])) {
+        if ($_GET['choix'] == 'Libelle' && isset($_GET['valeure'])) {
+            modifier_produit($_GET['valeure'], 'Libelle', $_GET['reference']);
+        }
+        if ($_GET['choix'] == 'Prix' && isset($_GET['valeure'])) {
+            modifier_produit($_GET['valeure'], 'Prix', $_GET['reference']);
+        }
 
-                                        if ($_GET['choix'] == 'Description' && isset($_GET['valeure'])) {
-                                            modifier_produit($_GET['valeure'], 'Description', $_GET['reference']);
-                                        }
-                                    }
+        if ($_GET['choix'] == 'Description' && isset($_GET['valeure'])) {
+            modifier_produit($_GET['valeure'], 'Description', $_GET['reference']);
+        }
+    }
  }
  ?>
 
@@ -362,9 +359,8 @@ class createConnexion {
 $connection = new createConnexion();
     $connect = $connection->connect();
     if ($connect) {
-            $req = mysqli_prepare($connect, "DELETE FROM Commentaires WHERE Id_commentaire = ?");
-            $req->bind_param('s', $reference);
-            $req->execute();
+            $query = "DELETE FROM Produit WHERE Reference = '$reference'";
+            $req = mysqli_query($connect, $query);
         }
     }
 ?>
@@ -412,7 +408,11 @@ $connection = new createConnexion();
 <?php function ajoutez_utilisateur($nom, $prenom, $age, $id, $tel, $adresse, $mdp, $client, $sexe, $date, $familiale) {
     $connection = new createConnexion();
     $connect = $connection->connect();
-    $query = "INSERT INTO `Utilisateur` (`Nom`,`Prenom`,`Age`,`Id`,`Mot_de_passe`,`Adresse`,`Telephone`,`Client`,`Sexe`,`Familiale`,`Date_de_naissance`) VALUES ('$nom', '$prenom', '$age', '$id', '$mdp', '$adresse', '$tel', '$client', '$sexe', '$familiale')";
+    $query = "INSERT INTO `Utilisateur` (`Nom`,`Prenom`,`Age`,`Id`,`Mot_de_passe`,`Adresse`,`Telephone`,`Client`,`Sexe`,`Familiale`,`Date_de_naissance`) VALUES ('$nom', '$prenom', '$age', '$id', '$mdp', '$adresse', '$tel', '$client', '$sexe', '$familiale', '$date')";
+    #$req = mysqli_prepare($connect, "INSERT INTO Utilisateur (Nom,Prenom,Age,Id,Mot_de_passe,Adresse,Telephone,Client,Sexe,Familiale,Date_de_naissance) VALUES ('?','?','?','?','?','?','?','?','?','?','?')");
+    #$req->bind_param('sssssssssss', $nom, $prenom, $age, $id, $mdp, $adresse, $tel, $client, $sexe, $date, $familiale
+    #);
+    #$req->execute();
     var_dump($query);
     $req = mysqli_query($connect,$query);
     if($req){header("Location:Accueil.php");}
@@ -451,9 +451,10 @@ $connection = new createConnexion();
         <th><?php echo $prix ?> </th> 
         <th> 
            <form action="Achete.php" method="get">
-           <input type="number" id="btn" name="quantite" required/>  
-           <input type="hidden" name="produit" value=<?php echo $reference ?>
+           <input type="number" name="quantite" required >  
+           <input type="hidden" name="produit" value=<?php echo $reference ?> >
            <input type="submit" value="Valider">
+           </form>
         </th>
         <th>
 
@@ -474,7 +475,7 @@ $connection = new createConnexion();
     $result->close();
 
     $reste = $quantite - $_GET['quantite'];
-    if ($reste > 0) {
+    if ($reste >= 0) {
         if ($result = mysqli_prepare($connect, "UPDATE Produit SET Quantite = ? WHERE Reference = ?")) {
             $result->bind_param('ss', $reste, $_GET['produit']);
             $result->execute();
@@ -675,7 +676,8 @@ $connection = new createConnexion();
     $connection = new createConnexion();
     $connect = $connection->connect();
     if ($connect) {
-        $query = " UPDATE Utilisateur SET ".$set." = '".$valeure." WHERE Id = '".$_COOKIE['id']."' ";
+        $query = " UPDATE Utilisateur SET ".$set." = '".$valeure."' WHERE Id = '".$_COOKIE['id']."' ";
+        var_dump($query);
         $req = mysqli_query($connect, $query);
     }
 }
@@ -684,7 +686,7 @@ $connection = new createConnexion();
     
     <!--                    Fonction Passer commande                -->
     
-<?php function passer_commande_selection(){
+<?php function passer_commande(){
     $connection = new createConnexion();
     $connect = $connection->connect();
     $result = mysqli_query($connect, "SELECT * FROM Produit");
@@ -720,7 +722,7 @@ $connection = new createConnexion();
 }
 ?>
             
-<?php function passer_commande(){
+<?php function passer_commande_selection(){
     $connection = new createConnexion();
     $connect = $connection->connect();
     $result = mysqli_query($connect, "SELECT * FROM Produit");
@@ -810,8 +812,8 @@ $connection = new createConnexion();
     $connection = new createConnexion();
     $connect = $connection->connect();
     $req = mysqli_query($connect, "SELECT Id FROM Utilisateur");
-    while ($resultat = $req->fetch()) {
-        if ($resultat == $id) {
+    while ($resultat = mysqli_fetch_assoc($req)) {
+        if ($resultat['Id'] == $id) {
             return false;
         }
     }
