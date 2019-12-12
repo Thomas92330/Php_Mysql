@@ -123,8 +123,8 @@ class createConnexion {
 
             <th>
                 <form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="post">
-                    <input type="hidden" id="btn" name="client" value =<?php echo $res["Id"] ?>/> <label for="btn">Consulter</label>      
-                    <input type="submit" value="Valider">
+                    <input type="hidden" name="client" value =<?php echo $res["Id"] ?>/>  
+                    <input type="submit" value="Consulter">
                 </form>  </th>
         </tr>
         <?php
@@ -135,7 +135,7 @@ class createConnexion {
 <?php function repondre_commentaire(){ ?>
     <form action="Afficher_la_liste_des_commentaires_d_un_client_donné.php" method="post">
         <p>
-            <input type="text" name="reponse">
+            Reponse : <input type="text" name="reponse">
             <input type="hidden" name="Id_commentaire" value =<?php echo $_POST['Id_commentaire']?>
             <input type="submit" value="Valider">
         </p>
@@ -152,7 +152,7 @@ class createConnexion {
     $result1 = mysqli_query($connect,$query1);
     $fetch = mysqli_fetch_assoc($result1);
     $query2 = "UPDATE  Commentaire SET Commentaires = '".$fetch['Commentaires']." Reponse : ".$_POST['reponse']."' WHERE Id_commentaire = '".$id."' ";
-    var_dump($query2); 
+    echo "Commentaire envoyé";
     $result2 = mysqli_query($connect,$query2 );
     
 }
@@ -163,7 +163,7 @@ class createConnexion {
     $connect = $connection->connect();
     list($id) = explode ('/',$id);
     $query = "DELETE FROM Commentaire WHERE Id_commentaire = '".$id."'";
-    var_dump($query);
+    echo "Commentaire supprimé";
     $result = mysqli_query($connect,$query );
 }
 ?>
@@ -182,19 +182,16 @@ class createConnexion {
 <?php function ajouter_produit_formulaire() {
     ?>
     <form action="Ajouter_un_produit.php" method="post">
-        <p> 
-            <label for="libelle">Libellé</label>
-            <input type="text" name="libelle">
-            
-            <label for="categorie">Categorie</label>
+        <p>
+            Libelle : <input type="text" name="libelle">
+
             <select name="categorie" size="1">
                 <option selected value="Pc">Pc</option>
                 <option value="Imprimante">Imprimante</option>
                 <option value="Scanner">Scanner</option>
 
             </select>
-                    
-            <label for="marque">Marque</label>
+
             <select name="marque" size="1">
                 <option selected value="Hp">Hp</option>
                 <option value="Canon">Canon</option>
@@ -202,15 +199,12 @@ class createConnexion {
                 <option value="Samsung">Samsung</option>
                 
             </select>
-            
-            <label for="quantite">Quantité</label>
-            <input type="number" name="quantite">
 
-            <label for="prix">Prix</label>
-            <input type="number" name="prix">
+            Quantite : <input type="number" name="quantite">
 
-            <label for="description">Description</label>
-            <input type="text" name="description">
+            Prix : <input type="number" name="prix">
+
+            Description : <input type="text" name="description">
 
             <input type="hidden" name="checker" value=1>
 
@@ -225,13 +219,13 @@ class createConnexion {
 <?php function consulter_produit() {
     ?>
             <tr>
-                <th>'Référence.'</th>
-                <th>'Libellé.'</th>
-                <th>'Catégorie.'</th>
-                <th>'Marque.'</th>
-                <th>'Quantité.'</th>
-                <th>'Prix.'</th>
-                <th>'Description.'</th>
+                <th>Référence</th>
+                <th>Libellé</th>
+                <th>Catégorie</th>
+                <th>Marque</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Description</th>
             </tr>
     <?php
     $connection = new createConnexion();
@@ -249,16 +243,16 @@ class createConnexion {
                     <th> <?php echo $res['Description'] ?>  </th>
                     <th>
                         <form action="Modifier_un_produit.php" method="get">
-                            <input type="hidden" id="btn" name="reference" value =<?php echo $res["Reference"] ?> /> <label for="btn">Modifier</label>      
-                            <input type="submit" value="Valider">
+                            <input type="hidden" name="reference" value =<?php echo $res["Reference"] ?> />    
+                            <input type="submit" value="Modifier">
                         </form>
                     </th>
 
             <?php if ($res['Quantite'] == 0) { ?>
                         <th>
                             <form action="Supprimer_un_produit.php" method="get">
-                                <input type="hidden" id="btn" name="reference" value = <?php echo $res["Reference"] ?>  /> <label for="btn">Modifier</label>      
-                                <input type="submit" value="Valider">
+                                <input type="hidden" name="reference" value = <?php echo $res["Reference"] ?>  /> 
+                                <input type="submit" value="Supprimer">
                             </form>
                         </th>
             <?php } else { ?>
@@ -278,54 +272,56 @@ class createConnexion {
         $connection = new createConnexion();
         $connect = $connection->connect();
         if ($connect) {
-            $req = mysqli_prepare($connect, "UPDATE Produit SET ? = ? WHERE Reference = ?");
-            $req->bind_param('sss', $set, $valeure, $reference
-            );
-            $req->execute();
+            list($reference,$_) = explode('/',$reference);
+            $query = "UPDATE Produit SET $set  = '$valeure' WHERE Reference = '$reference'";
+            $req = mysqli_prepare($connect, $query);
+            $req = mysqli_query($connect,$query);
             if ($req == false) {
                 echo 'Echec modification <br/>';
             } else {
-                echo 'Modification réussi <br/>';
+                echo 'Modification réussie <br/>';
             }
         }
     }
 ?> 
     
 <?php function modifier_produit_formulaire() { ?>
-    <table id="Tableau">
-        <th>
-        <tr>'Libelle'</tr>
-        <tr>'Description'</tr>
-        <tr>'Prix'</tr>
-        </th>
-
-        <th>
         <tr>
+        <th>'Libelle'</th>
+        <th>'Description'</th>
+        <th>'Prix'</th>
+        </tr>
+
+        <tr>
+        <th>
         <form action="Modifier_un_produit.php" method="get">'
             <input type="hidden" name="choix" value ="Libelle"/>
             <input type="text" id="btn" name="valeure" /> 
                 <input type="hidden" name="reference" value=<?php echo $_GET['reference'] ?>/>
                 <input type="submit" value="Valider">
-                </tr>
-                <tr>
+        </form>
+                </th>
+                <th>
 
-                <tr>
+                <th>
                 <form action="Modifier_un_produit.php" method="get">'
                     <input type="hidden" name="choix" value ="Description"/> 
                     <input type="text" id="btn" name="valeure" /> 
                         <input type="hidden" name="reference" value=<?php echo $_GET['reference'] ?>/>
                         <input type="submit" value="Valider">
-                        </tr>
+                        </form>
+                        </th>
 
-                        <tr>
+                        <th>
                         <form action="Modifier_un_produit.php" method="get">'
                             <input type="hidden" name="choix" value ="Prix"/> 
                             <input type="number" id="btn" name="valeure" />
                                 <input type="hidden" name="reference" value=<?php echo $_GET['reference'] ?>/>
                                 <input type="submit" value="Valider">
-                                </tr>
-                                <tr>
-                                    </th>
+                                </form>
+                                </th>
+                                <th>
+                                    </tr>
                                     </table>
                                 <?php
 }
@@ -419,7 +415,7 @@ $connection = new createConnexion();
     #$req->bind_param('sssssssssss', $nom, $prenom, $age, $id, $mdp, $adresse, $tel, $client, $sexe, $date, $familiale
     #);
     #$req->execute();
-    var_dump($query);
+    echo "Utilisateur ajouté avec succés";
     $req = mysqli_query($connect,$query);
     if($req){header("Location:Accueil.php");}
 }
@@ -457,7 +453,6 @@ $connection = new createConnexion();
         <th><?php echo $prix ?> </th> 
         <th> 
            <form action="Achete.php" method="get">
-           <label for="quantite">Quantite</label>
            <input type="number" name="quantite" required >  
            <input type="hidden" name="produit" value=<?php echo $reference ?> >
            <input type="submit" value="Valider">
@@ -684,7 +679,7 @@ $connection = new createConnexion();
     $connect = $connection->connect();
     if ($connect) {
         $query = " UPDATE Utilisateur SET ".$set." = '".$valeure."' WHERE Id = '".$_COOKIE['id']."' ";
-        var_dump($query);
+       echo "Info modifié avec succés";
         $req = mysqli_query($connect, $query);
     }
 }
@@ -870,7 +865,7 @@ $connection = new createConnexion();
             $req->bind_param('ss', $select, $from
             );
         } else {
-            var_dump($req);
+            
         }
     } else {
         $req = mysqli_prepare($connect, "SELECT ? FROM ? WHERE ?");
